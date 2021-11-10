@@ -1,6 +1,7 @@
 const Discord = require('discord.js');
 const { prefix, token } = require('./config.json');
 const ytdl = require('ytdl-core');
+const yts = require('yt-search');
 const client = new Discord.Client({ intents: ['GUILDS', 'GUILD_MEMBERS', 'GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS'] });
 
 const queue = new Map();
