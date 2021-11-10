@@ -1,0 +1,26 @@
+{
+  "name": "boovy",
+  "version": "1.0.0",
+  "description": "Boovy.js is primarily a learning experience for two fucks who don't know shit.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ls3205/Boovy.js.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ls3205/Boovy.js/issues"
+  },
+  "homepage": "https://github.com/ls3205/Boovy.js#readme",
+  "dependencies": {
+    "@discordjs/voice": "^0.7.2",
+    "discord-player": "^5.1.0",
+    "discord.js": "^13.3.1",
+    "dotenv": "^10.0.0",
+    "yt-search": "^2.10.2"
+  }
+}
