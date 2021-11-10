@@ -29,6 +29,14 @@ async function execute(message, serverQueue) {
         title: songInfo.title,
         url: songInfo.video_url,
     };
+
+    if (!serverQueue) {
+
+    }else {
+        serverQueue.songs.push(song);
+        console.log(serverQueue.songs);
+        return message.channel.send(`${song.title} has been added to the queue!`);
+    }
 }
 
 client.on('message', async message => {
