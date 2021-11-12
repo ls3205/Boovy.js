@@ -66,5 +66,5 @@ client.login(token);
 // var test_url2 = vids;
 // console.log(test_url2);
 
-const r = yts.search( 'superman theme' ).then(console.log);
+const r = yts2.search( 'superman theme' ).then(console.log);
 console.log(r);
