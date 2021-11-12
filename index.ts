@@ -9,7 +9,8 @@ import {
     VoiceConnectionStatus
 } from '@discordjs/voice';
 import ytdl from 'ytdl-core';
-const yts = require('youtube-search-without-api-key');
+import * as yts from 'youtube-search-without-api-key'
+import * as yts2 from 'yt-search'
 
 const client = new DiscordJS.Client({ intents: ['GUILDS', 'GUILD_MEMBERS', 'GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS'] });
 
@@ -21,9 +22,9 @@ const prefix = process.env.PREFIX;
 const player = createAudioPlayer();
 
 function play(guild, query) {
-    let link = highest_search(query);
-    const resource = createAudioResource(link);
-    console.log(link);
+    // let link = highest_search(query);
+    // const resource = createAudioResource(link);
+    // console.log(link);
 }
 
 function highest_search(query) {
@@ -41,7 +42,7 @@ client.once('disconnect', () => {
     console.log('Disconnect!');
 });
 
-client.on('message', async (message) => {
+client.on('messageCreate', async (message) => {
     if (message.author.bot) return;
     if (!message.content.startsWith(`${prefix}`)) return;
 
@@ -56,3 +57,14 @@ client.on('message', async (message) => {
 });
 
 client.login(token);
+
+// var test = yts.search('bean').then(console.log);
+// var test_url = yts.search('bean').then(console.log);
+
+// var test2 = yts2.search('bean').then();
+// var vids = test2[0];
+// var test_url2 = vids;
+// console.log(test_url2);
+
+const r = yts.search( 'superman theme' ).then(console.log);
+console.log(r);
