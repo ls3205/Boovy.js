@@ -9,7 +9,7 @@ import {
     VoiceConnectionStatus
 } from '@discordjs/voice';
 import ytdl from 'ytdl-core';
-const yts = require('yt-search');
+const yts = require('youtube-search-without-api-key');
 
 const client = new DiscordJS.Client({ intents: ['GUILDS', 'GUILD_MEMBERS', 'GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS'] });
 
@@ -27,7 +27,7 @@ function play(guild, query) {
 }
 
 function highest_search(query) {
-    var video = yts("yes", query);
+    let video = yts.search(query);
     return video;
 }
 
