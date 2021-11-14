@@ -58,13 +58,68 @@ client.on('messageCreate', async (message) => {
 
 client.login(token);
 
-// var test = yts.search('bean').then(console.log);
-// var test_url = yts.search('bean').then(console.log);
+//const r = yts2.search('bean').then(() => console.log(r));
+const r = yts.search('bean')//.then(
+//if (r  //check error message
 
-// var test2 = yts2.search('bean').then();
-// var vids = test2[0];
-// var test_url2 = vids;
-// console.log(test_url2);
+//return 0-9
+const getRandomInt = (): string => {
+    return (Math.random() * 10).toFixed(0);
+}
 
-const r = yts2.search( 'superman theme' ).then(console.log);
-console.log(r);
+/*
+All this shit below is just wren's example code for promises
+It can probably be deleted once everything is working
+//resolve with an 'even' integer
+const findEven = new Promise<number>((resolve, reject) => {
+    setTimeout(function(): void {
+
+        // convert 'string' to 'number'
+        const value = parseInt(getRandomInt());
+        
+        if (value % 2 === 0) {
+            resolve(value);
+        } else {
+            reject(new Error('Odd number'));
+        }
+
+    }, 1000);
+});
+
+// listen to promise resolution
+findEven.then((value) => {
+    // (parameter) value: number
+    console.log(`Even number: ${value}`);
+}).catch((error) => {
+    // (parameter) error: any
+    console.log(`Error: ${error}`);
+}).finally(() => {
+    // always executed
+    console.log('Completed')
+});*/
+
+//resolve with an 'even' integer
+const makeRequest = new Promise<any>((resolve, reject) => {
+    setTimeout(function(): void {
+
+        // convert 'string' to 'number'
+        const test_url = yts.search('bean');
+        
+        if (test_url != undefined) {
+            resolve(test_url);
+        } else {
+            reject(new Error('Unable to fetch url'));
+        }
+
+    }, 1000);
+});
+
+// listen to promise resolution
+makeRequest.then((value) => {
+    console.log(value[0].url);
+}).catch((error) => {
+    console.log(`Error: ${error}`);
+}).finally(() => {
+    // always executed
+    console.log('Completed')
+});
