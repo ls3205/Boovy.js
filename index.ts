@@ -11,7 +11,7 @@ import {
 import ytdl from 'ytdl-core';
 import * as yts from 'youtube-search-without-api-key'
 
-function search(query) {
+async function search(query) {
     var link;
     const makeRequest = new Promise<any>((resolve, reject) => {
         setTimeout(function (): void {
@@ -31,7 +31,7 @@ function search(query) {
     makeRequest.then((value) => {
         //console.log(value[0].url);
         link = String(value[0].url);
-        console.log("Search link recieved is: " + link);
+        console.log("{Search Function} Search link recieved is: " + link);
     }).catch((error) => {
         console.log(`Error: ${error}`);
         return 'Error';
@@ -55,7 +55,7 @@ const player = createAudioPlayer();
 
 function play(message, query) {
     let link = String(search(query));
-    console.log("Link recieved is: " + link);
+    console.log("{Play Function} Link recieved is: " + link);
     const resource = createAudioResource(link);
     message.reply(`Now playing, ${link}!`);
 }
@@ -97,13 +97,16 @@ client.on('messageCreate', async (message) => {
 
     const content = String(message);
     const args = content.substr(content.indexOf(' ')+1);
-    console.log("Arguments recieved: " + String(args));
+    console.log("Arguments recieved: " + args);
 
     if (message.content.startsWith(`${prefix}play`)) {
         play(message, args);
     }
     if (message.content.startsWith(`${prefix}search`)) {
-        console.log(search(String(args)));
+        console.log(search(args));
+    }
+    if (message.content.startsWith(`${prefix}linktest`)) {
+        await message.reply(`Link recieved: ${search(args)}`);
     }
     // if (message.content.startsWith(`${prefix}join`)) {
     //     const channel = message.member?.voice.channel;
