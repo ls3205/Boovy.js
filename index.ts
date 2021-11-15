@@ -19,7 +19,7 @@ function search(query) {
             const vidjson = yts.search(query);
 
             if (vidjson != undefined) {
-                resolve(vidjson.toString());
+                resolve(vidjson);
             } else {
                 reject(new Error('Unable to fetch data'));
             }
@@ -31,6 +31,7 @@ function search(query) {
     makeRequest.then((value) => {
         //console.log(value[0].url);
         link = String(value[0].url);
+        console.log("Search link recieved is: " + link);
     }).catch((error) => {
         console.log(`Error: ${error}`);
         return 'Error';
@@ -54,8 +55,8 @@ const player = createAudioPlayer();
 
 function play(message, query) {
     let link = String(search(query));
+    console.log("Link recieved is: " + link);
     const resource = createAudioResource(link);
-    console.log(link);
     message.reply(`Now playing, ${link}!`);
 }
 
@@ -96,12 +97,13 @@ client.on('messageCreate', async (message) => {
 
     const content = String(message);
     const args = content.substr(content.indexOf(' ')+1);
+    console.log("Arguments recieved: " + String(args));
 
     if (message.content.startsWith(`${prefix}play`)) {
         play(message, args);
     }
     if (message.content.startsWith(`${prefix}search`)) {
-        console.log(search(args));
+        console.log(search(String(args)));
     }
     // if (message.content.startsWith(`${prefix}join`)) {
     //     const channel = message.member?.voice.channel;
