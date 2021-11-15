@@ -7,8 +7,9 @@ Install the repo: 'git clone https://github.com/ls3205/Boovy.js'
 
 ## Usage
 Type 'ts-node index.ts' in a command line at 'cd Boovy.js'.
-```
-C:\Boovy.js> ts-node .\src\index.ts
+```cmd
+C:\Boovy.js>ts-node .\src\index.ts
+C:\Boovy.js>ts-node .\src\index.ts
 ```
 Boovy.js folder location may vary
 
