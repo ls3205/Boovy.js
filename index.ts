@@ -42,6 +42,15 @@ async function search(query) {
     return link;
 }
 
+async function search2(query) {
+    let json = await yts.search(query).then(function (value) {
+        return value;
+    });
+    let url = await json[0].url;
+    await console.log("{Search2 Function} Link recieved is: " + url);
+    return url;
+}
+
 const client = new DiscordJS.Client({ intents: ['GUILDS', 'GUILD_MEMBERS', 'GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS'] });
 
 import dotenv from 'dotenv';
@@ -53,11 +62,11 @@ const prefix = process.env.PREFIX;
 
 const player = createAudioPlayer();
 
-function play(message, query) {
-    let link = String(search(query));
-    console.log("{Play Function} Link recieved is: " + link);
-    const resource = createAudioResource(link);
-    message.reply(`Now playing, ${link}!`);
+async function play(message, query) {
+    let url = await search2(query);
+    console.log("{Play Function} Link recieved is: " + url);
+    const resource = createAudioResource(url);
+    message.reply(`Now playing, ${url}!`);
 }
 
 function highest_search(query) {
@@ -106,7 +115,8 @@ client.on('messageCreate', async (message) => {
         console.log(search(args));
     }
     if (message.content.startsWith(`${prefix}linktest`)) {
-        await message.reply(`Link recieved: ${search(args)}`);
+        var linkurl = await search2(args);
+        message.reply(`Link recieved: ${linkurl}`);
     }
     // if (message.content.startsWith(`${prefix}join`)) {
     //     const channel = message.member?.voice.channel;
