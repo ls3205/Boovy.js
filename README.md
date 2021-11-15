@@ -6,4 +6,4 @@ Be sure to have node.js and git installed.
 Install the repo: 'git clone https://github.com/ls3205/Boovy.js'
 
 ## Usage
-Type 'node index.js' in a command line at 'cd Boovy.js'.
+Type 'ts-node index.ts' in a command line at 'cd Boovy.js'.

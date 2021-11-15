@@ -12,6 +12,33 @@ import ytdl from 'ytdl-core';
 import * as yts from 'youtube-search-without-api-key'
 import * as yts2 from 'yt-search'
 
+/*
+const makeRequest = new Promise<any>((resolve, reject) => {
+    setTimeout(function(): void {
+
+        // convert 'string' to 'number'
+        const test_url = yts.search('bean');
+
+        if (test_url != undefined) {
+            resolve(test_url);
+        } else {
+            reject(new Error('Unable to fetch url'));
+        }
+
+    }, 1000);
+});
+
+// listen to promise resolution
+makeRequest.then((value) => {
+    console.log(value[0].url);
+}).catch((error) => {
+    console.log(`Error: ${error}`);
+}).finally(() => {
+    // always executed
+    console.log('Completed')
+});
+*/
+
 const client = new DiscordJS.Client({ intents: ['GUILDS', 'GUILD_MEMBERS', 'GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS'] });
 
 import dotenv from 'dotenv';
@@ -80,80 +107,12 @@ client.on('messageCreate', async (message) => {
                 console.log(connection);
                 connection.subscribe(player);
             } catch (error) {
-				console.error(error);
-			}
-		} else {
-			void message.reply('Join a voice channel then try again!');
-		}
+                console.error(error);
+            }
+        } else {
+            void message.reply('Join a voice channel then try again!');
+        }
     }
 });
 
 client.login(token);
-
-//const r = yts2.search('bean').then(() => console.log(r));
-const r = yts.search('bean')//.then(
-//if (r  //check error message
-
-//return 0-9
-const getRandomInt = (): string => {
-    return (Math.random() * 10).toFixed(0);
-}
-
-/*
-All this shit below is just wren's example code for promises
-It can probably be deleted once everything is working
-//resolve with an 'even' integer
-const findEven = new Promise<number>((resolve, reject) => {
-    setTimeout(function(): void {
-
-        // convert 'string' to 'number'
-        const value = parseInt(getRandomInt());
-
-        if (value % 2 === 0) {
-            resolve(value);
-        } else {
-            reject(new Error('Odd number'));
-        }
-
-    }, 1000);
-});
-
-// listen to promise resolution
-findEven.then((value) => {
-    // (parameter) value: number
-    console.log(`Even number: ${value}`);
-}).catch((error) => {
-    // (parameter) error: any
-    console.log(`Error: ${error}`);
-}).finally(() => {
-    // always executed
-    console.log('Completed')
-});*/
-
-/*
-//resolve with an 'even' integer
-const makeRequest = new Promise<any>((resolve, reject) => {
-    setTimeout(function(): void {
-
-        // convert 'string' to 'number'
-        const test_url = yts.search('bean');
-
-        if (test_url != undefined) {
-            resolve(test_url);
-        } else {
-            reject(new Error('Unable to fetch url'));
-        }
-
-    }, 1000);
-});
-
-// listen to promise resolution
-makeRequest.then((value) => {
-    console.log(value[0].url);
-}).catch((error) => {
-    console.log(`Error: ${error}`);
-}).finally(() => {
-    // always executed
-    console.log('Completed')
-});
-*/
