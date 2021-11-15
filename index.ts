@@ -16,11 +16,10 @@ function search(query) {
     const makeRequest = new Promise<any>((resolve, reject) => {
         setTimeout(function (): void {
 
-            // convert 'string' to 'number'
             const vidjson = yts.search(query);
 
             if (vidjson != undefined) {
-                resolve(vidjson);
+                resolve(vidjson.toString());
             } else {
                 reject(new Error('Unable to fetch data'));
             }
