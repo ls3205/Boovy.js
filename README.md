@@ -7,3 +7,9 @@ Install the repo: 'git clone https://github.com/ls3205/Boovy.js'
 
 ## Usage
 Type 'ts-node index.ts' in a command line at 'cd Boovy.js'.
+
+## Functions
+1. Who fucking knows
+2. You can play shit ig man idk
+3. It doesn't even play shit yet it just pastes a link
+4. I have clinical austist
