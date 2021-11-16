@@ -8,6 +8,7 @@ import {
     AudioPlayerStatus,
     VoiceConnectionStatus,
     DiscordGatewayAdapterCreator,
+    getVoiceConnection,
 } from '@discordjs/voice';
 import * as yts from 'youtube-search-without-api-key'
 import * as DisTube from 'distube';
@@ -91,5 +92,11 @@ export async function getMention(message) {
 }
 
 export async function leave(message) {
-    message.member.VoiceChannel.leave();
+    const embed = new MessageEmbed()
+        .setColor('#00be94')
+        .setTitle(`Left ${message.member?.voice.channel?.name}`)
+        .setDescription(`:wave:`)
+        .setAuthor(message.author.username, message.author.avatarURL())
+    await message.channel.send({ embeds: [embed] });
+    getVoiceConnection(message.guild?.id)?.disconnect();
 }
