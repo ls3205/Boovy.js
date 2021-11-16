@@ -51,6 +51,9 @@ client.on('messageCreate', async (message) => {
     if (message.content.startsWith(`${prefix}skip`)) {
         commands.skip(message);
     }
+    if (message.content.startsWith(`${prefix}search`)) {
+        commands.searchMsg(message, args);
+    }
 });
 
 dst
