@@ -1,4 +1,4 @@
-import DiscordJS, { Message, VoiceChannel } from 'discord.js';
+import DiscordJS, { Message, MessageEmbed, VoiceChannel } from 'discord.js';
 import {
     joinVoiceChannel,
     createAudioPlayer,
@@ -55,10 +55,19 @@ export async function stop(message) {
 }
 
 export async function searchMsg(message, query) {
-    let url = await search(query)[0];
-    let title = await search(query)[1];
-    let thumbnail = await search(query)[2];
-    await message.channel.send(url);
-    await message.channel.send(title);
-    await message.channel.send(thumbnail);
+    const { url, title, thumbnail } = await search(query);
+    const mention = await getMention(message);
+    console.log(mention);
+    const embed = await new MessageEmbed()
+        .setColor('#00be94')
+        .setTitle('Search Result')
+        .setDescription(`[${title}](${url}) [${mention}]`)
+        .setThumbnail(thumbnail)
+        .setAuthor(`${message.author.username}`, message.author.displayAvatarURL());
+    await message.channel.send({ embeds: [embed] });
+}
+
+export async function getMention(message) {
+    const mention = '<@' + await message.member?.id + '>';
+    return mention;
 }
