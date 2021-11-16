@@ -6,13 +6,15 @@ import {
     entersState,
     StreamType,
     AudioPlayerStatus,
-    VoiceConnectionStatus
+    VoiceConnectionStatus,
+    DiscordGatewayAdapterCreator,
 } from '@discordjs/voice';
-import ytdl from 'ytdl-core';
 import * as yts from 'youtube-search-without-api-key'
+import * as DisTube from 'distube';
 
-const client = new DiscordJS.Client({ intents: ['GUILDS', 'GUILD_MEMBERS', 'GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS'] });
-const player = createAudioPlayer();
+const client = new DiscordJS.Client({ intents: ['GUILDS', 'GUILD_MEMBERS', 'GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS', 'GUILD_VOICE_STATES'] });
+const dst = new DisTube.default(client);
+const queue = new Map()
 
 import dotenv from 'dotenv';
 dotenv.config();
@@ -28,18 +30,16 @@ async function search(query) {
 
 async function play(message, query) {
     let url = await search(query);
-    console.log("{Play Function} Link recieved is: " + url);
-    const resource = createAudioResource(url);
-    message.reply(`Now playing, ${url}!`);
-}
+    dst.play(message, url)
+};
 
-async function join(channel: VoiceChannel) {
+async function join(message) {
     const connection = joinVoiceChannel({
-        channelId: channel.id,
-        guildId: channel.guild.id,
-        adapterCreator: channel.guild.voiceAdapterCreator,
+        channelId: message.member?.voice.channel?.id,
+        guildId: message.guild?.id,
+        adapterCreator: message.guild?.voiceAdapterCreator as unknown as DiscordGatewayAdapterCreator
     });
-    
+
     try {
         await entersState(connection, VoiceConnectionStatus.Ready, 30e3);
         return connection;
@@ -61,70 +61,24 @@ client.once('disconnect', () => {
 
 client.on('messageCreate', async (message) => {
     if (message.author.bot) return;
-    if (!message.content.startsWith(`${prefix}`)) return;
-    
+    if (!message.content.startsWith(`${prefix}`)) return
+
     const content = String(message);
-    const args = content.substr(content.indexOf(' ')+1);
+    const args = content.substr(content.indexOf(' ') + 1);
     console.log("Arguments recieved: " + args);
-    
+    const serverQueue = queue.get(message.guild?.id);
+
     if (message.content.startsWith(`${prefix}play`)) {
         play(message, args);
     }
-    if (message.content.startsWith(`${prefix}search`)) {
-        console.log(search(args));
+    if (message.content.startsWith(`${prefix}join`)) {
+        join(message);
     }
-    if (message.content.startsWith(`${prefix}linktest`)) {
-        var linkurl = await search(args);
-        message.reply(`Link recieved: ${linkurl}`);
-    }
-    // if (message.content.startsWith(`${prefix}join`)) {
-    //     const channel = message.member?.voice.channel;
-        
-    //     if (channel) {
-    //         try {
-    //             const connection = await join(channel);
-    //             console.log(connection);
-    //             connection.subscribe(player);
-    //         } catch (error) {
-    //             console.error(error);
-    //         }
-    //     } else {
-    //         void message.reply('Join a voice channel then try again!');
-    //     }
-    // }
 });
-                    
+
+dst
+    .on('playSong', (message, song) => {
+        console.log(`Start playing: ${song}`);
+    })
+
 client.login(token);
-                    
-/*
-async function search(query) {
-    var link;
-    const makeRequest = new Promise<any>((resolve, reject) => {
-        setTimeout(function (): void {
-
-            const vidjson = yts.search(query);
-
-            if (vidjson != undefined) {
-                resolve(vidjson);
-            } else {
-                reject(new Error('Unable to fetch data'));
-            }
-
-        }, 1000);
-    });
-
-    // listen to promise resolution
-    makeRequest.then((value) => {
-        //console.log(value[0].url);
-        link = String(value[0].url);
-        console.log("{Search Function} Search link recieved is: " + link);
-    }).catch((error) => {
-        console.log(`Error: ${error}`);
-        return 'Error';
-    }).finally(() => {
-        // always executed
-        console.log('Completed')
-    });
-    return link;
-}
-*/
