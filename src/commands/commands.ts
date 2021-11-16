@@ -19,9 +19,9 @@ export async function search(query) {
     let url = await json[0].url;
     let title = await json[0].title;
     let thumbnail = await json[0].snippet.thumbnails.url;
-    await console.log("{Search2 Function} Link recieved is: " + url);
-    await console.log("{Search2 Function} Title recieved is: " + title);
-    await console.log("{Search2 Function} Thumbnail recieved is: " + thumbnail);
+    await console.log("{Search Function} Link recieved is: " + url);
+    await console.log("{Search Function} Title recieved is: " + title);
+    await console.log("{Search Function} Thumbnail recieved is: " + thumbnail);
     return { url, title, thumbnail };
 }
 
