@@ -11,6 +11,8 @@ import {
 } from '@discordjs/voice';
 import * as yts from 'youtube-search-without-api-key'
 import * as DisTube from 'distube';
+import { time } from 'console';
+import { title } from 'process';
 const client = new DiscordJS.Client({ intents: ['GUILDS', 'GUILD_MEMBERS', 'GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS', 'GUILD_VOICE_STATES'] });
 const dst = new DisTube.default(client);
 
@@ -26,8 +28,17 @@ export async function search(query) {
 }
 
 export async function play(message, query) {
-    let url = await search(query)[0];
+    const mention = await getMention(message);
+    const { url, title, thumbnail } = await search(query);
     dst.play(message, url)
+    const embed = new MessageEmbed()
+        .setColor('#00be94')
+        .setTitle('Now Playing')
+        .setDescription(`[${title}](${url}) [${mention}]`)
+        .setThumbnail(thumbnail)
+        .setAuthor(message.author.username, message.author.avatarURL())
+    
+    await message.channel.send({ embeds: [embed] });
 };
 
 export async function skip(message) {
@@ -41,8 +52,15 @@ export async function join(message) {
         adapterCreator: message.guild?.voiceAdapterCreator as unknown as DiscordGatewayAdapterCreator
     });
 
+    const embed = new MessageEmbed()
+        .setColor('#00be94')
+        .setTitle(`Joined ${message.member?.voice.channel?.name}`)
+        .setDescription(`:wave:`)
+        .setAuthor(message.author.username, message.author.avatarURL())
+
     try {
         await entersState(connection, VoiceConnectionStatus.Ready, 30e3);
+        await message.channel.send({ embeds: [embed] });
         return connection;
     } catch (error) {
         connection.destroy();
