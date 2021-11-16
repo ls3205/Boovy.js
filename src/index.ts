@@ -8,13 +8,13 @@ import {
     AudioPlayerStatus,
     VoiceConnectionStatus,
     DiscordGatewayAdapterCreator,
-} from '@discordjs/voice';
-import * as yts from 'youtube-search-without-api-key'
+} from '@discordjs/voice'; // Honestly not sure why I need this import it doesn't do shit but for whatever reason it doesn't work without it.
+import * as yts from 'youtube-search-without-api-key' //^
 import * as DisTube from 'distube';
-import * as commands from './commands/commands';
+import * as commands from './commands/commands'; //Since I didn't import them individually, you need to do commands.search, commands.play, etc. instead of just commands.
 
 const client = new DiscordJS.Client({ intents: ['GUILDS', 'GUILD_MEMBERS', 'GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS', 'GUILD_VOICE_STATES'] });
-export const dst = new DisTube.default(client);
+const dst = new DisTube.default(client);
 
 import dotenv from 'dotenv';
 dotenv.config();
@@ -36,7 +36,7 @@ client.on('messageCreate', async (message) => {
     if (!message.content.startsWith(`${prefix}`)) return
 
     const content = String(message);
-    const args = content.substr(content.indexOf(' ') + 1);
+    const args = content.substr(content.indexOf(' ') + 1); //Gets everything after the first space
     console.log("Arguments recieved: " + args);
 
     if (message.content.startsWith(`${prefix}play`)) {
