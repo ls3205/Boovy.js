@@ -37,22 +37,26 @@ client.on('messageCreate', async (message) => {
 
     const content = String(message);
     const args = content.substr(content.indexOf(' ') + 1); //Gets everything after the first space
+    var connection;
     console.log("Arguments recieved: " + args);
 
     if (message.content.startsWith(`${prefix}play`)) {
-        commands.play(message, args);
+        await commands.play(message, args);
     }
     if (message.content.startsWith(`${prefix}join`)) {
-        commands.join(message);
+        connection = await commands.join(message);
     }
     if (message.content.startsWith(`${prefix}stop`)) {
-        commands.stop(message);
+        await commands.stop(message);
     }
     if (message.content.startsWith(`${prefix}skip`)) {
-        commands.skip(message);
+        await commands.skip(message);
     }
     if (message.content.startsWith(`${prefix}search`)) {
-        commands.searchMsg(message, args);
+        await commands.searchMsg(message, args);
+    }
+    if (message.content.startsWith(`${prefix}leave`)) {
+        await commands.leave(message);
     }
 });
 

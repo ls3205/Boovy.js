@@ -89,3 +89,7 @@ export async function getMention(message) {
     const mention = '<@' + await message.member?.id + '>';
     return mention;
 }
+
+export async function leave(message) {
+    message.member.VoiceChannel.leave();
+}
