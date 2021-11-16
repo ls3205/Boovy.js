@@ -48,6 +48,9 @@ client.on('messageCreate', async (message) => {
     if (message.content.startsWith(`${prefix}stop`)) {
         commands.stop(message);
     }
+    if (message.content.startsWith(`${prefix}skip`)) {
+        commands.skip(message);
+    }
 });
 
 dst

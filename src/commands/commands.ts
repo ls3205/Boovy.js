@@ -26,7 +26,7 @@ export async function play(message, query) {
     dst.play(message, url)
 };
 
-export async function skip(message, query) {
+export async function skip(message) {
     dst.skip(message);
 }
 
