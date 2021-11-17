@@ -14,8 +14,14 @@ import * as yts from 'youtube-search-without-api-key'
 import * as DisTube from 'distube';
 import { time } from 'console';
 import { title } from 'process';
+import { Queue } from 'discord-player';
 const client = new DiscordJS.Client({ intents: ['GUILDS', 'GUILD_MEMBERS', 'GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS', 'GUILD_VOICE_STATES'] });
-const dst = new DisTube.default(client);
+const dst = new DisTube.default(client, {
+    leaveOnEmpty: false,
+    emptyCooldown: 5000,
+    leaveOnStop: false,
+});
+var loopvar = 0;
 
 export async function search(query) {
     let json = await yts.search(query);
@@ -100,3 +106,49 @@ export async function leave(message) {
     await message.channel.send({ embeds: [embed] });
     getVoiceConnection(message.guild?.id)?.disconnect();
 }
+
+export async function loop(message) {
+    var loopstr;
+    if (loopvar == 0) {
+        loopstr = 'repeat';
+        dst.setRepeatMode(loopstr);
+        loopvar = 1;
+    } else if (loopvar == 1) {
+        loopstr = 'loop';
+        dst.setRepeatMode(loopstr);
+        loopvar = 2;
+    } else {
+        loopstr = 'none';
+        dst.setRepeatMode(loopstr);
+        loopvar = 0;
+    }   
+}
+
+export async function queue(message) {
+    const queue = dst.getQueue(message);
+    if (!queue) {
+        const embed = new MessageEmbed()
+            .setColor('#00be94')
+            .setTitle('There is Nothing Playing');
+        await message.channel.send({ embeds: [embed] });
+    } else {
+        
+        const queueStr = 
+            `${queue.songs
+                .map(
+                    (song, id) =>
+                        `**${id ? id : 'Playing'}**. ${song.name} - \`${
+                            song.formattedDuration
+                        }\``,
+                )
+                .slice(0, 10)
+                .join('\n')}`;
+
+        const embed = new MessageEmbed()
+            .setColor('#00be94')
+            .setTitle('Queue')
+            .setDescription(`${queueStr}`)
+            .setAuthor(message.author.username, message.author.avatarURL())
+        await message.channel.send({ embeds: [embed] });
+    }
+};

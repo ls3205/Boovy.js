@@ -14,7 +14,11 @@ import * as DisTube from 'distube';
 import * as commands from './commands/commands'; //Since I didn't import them individually, you need to do commands.search, commands.play, etc. instead of just commands.
 
 const client = new DiscordJS.Client({ intents: ['GUILDS', 'GUILD_MEMBERS', 'GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS', 'GUILD_VOICE_STATES'] });
-const dst = new DisTube.default(client);
+const dst = new DisTube.default(client, {
+    leaveOnEmpty: false,
+    emptyCooldown: 5000,
+    leaveOnStop: false
+});
 
 import dotenv from 'dotenv';
 dotenv.config();
@@ -57,6 +61,9 @@ client.on('messageCreate', async (message) => {
     }
     if (message.content.startsWith(`${prefix}leave`)) {
         await commands.leave(message);
+    }
+    if (message.content.startsWith(`${prefix}queue`)) {
+        await commands.queue(message);
     }
 });
 
