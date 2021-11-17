@@ -49,6 +49,11 @@ export async function play(message, query) {
 };
 
 export async function skip(message) {
+    const embed = new MessageEmbed()
+        .setColor('#00be94')
+        .setTitle('Skipped Song')
+        .setDescription(':fast_forward:')
+    await message.channel.send({ embeds: [embed] });
     dst.skip(message);
 }
 
