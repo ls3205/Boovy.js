@@ -12,6 +12,7 @@ import {
 import * as yts from 'youtube-search-without-api-key' //^
 import * as DisTube from 'distube';
 import * as commands from './commands/commands'; //Since I didn't import them individually, you need to do commands.search, commands.play, etc. instead of just commands.
+import * as server from './server';
 
 const client = new DiscordJS.Client({ intents: ['GUILDS', 'GUILD_MEMBERS', 'GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS', 'GUILD_VOICE_STATES'] });
 const dst = new DisTube.default(client, {
@@ -72,4 +73,5 @@ dst
         console.log(`Start playing: ${song}`);
     })
 
+server.keepAlive();
 client.login(token);
