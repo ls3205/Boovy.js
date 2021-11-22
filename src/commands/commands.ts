@@ -24,6 +24,21 @@ const dst = new DisTube.default(client, {
 var loopvar = 0;
 
 export async function search(query) {
+    if (String(query).startsWith("https://www.youtube.com/watch?v=")) {
+        const id = String(query).substring(
+            query.indexOf("=") + 1,
+            query.lastIndexOf("&")
+        );
+        await console.log(`{Search Function} Id recieved is: ${id}`);
+        let json = await yts.search(query);
+        let url = query;
+        let title = await json[0].title;
+        let thumbnail = await json[0].snippet.thumbnails.url;
+        await console.log("{Search Function} Link recieved is: " + url);
+        await console.log("{Search Function} Title recieved is: " + title);
+        await console.log("{Search Function} Thumbnail recieved is: " + thumbnail);
+        return { url, title, thumbnail };
+    }
     let json = await yts.search(query);
     let url = await json[0].url;
     let title = await json[0].title;
@@ -44,7 +59,7 @@ export async function play(message, query) {
         .setDescription(`[${title}](${url}) [${mention}]`)
         .setThumbnail(thumbnail)
         .setAuthor(message.author.username, message.author.avatarURL())
-    
+
     await message.channel.send({ embeds: [embed] });
 };
 
@@ -126,7 +141,7 @@ export async function loop(message) {
         loopstr = 'none';
         dst.setRepeatMode(loopstr);
         loopvar = 0;
-    }   
+    }
 }
 
 export async function queue(message) {
@@ -137,13 +152,12 @@ export async function queue(message) {
             .setTitle('There is Nothing Playing');
         await message.channel.send({ embeds: [embed] });
     } else {
-        
-        const queueStr = 
+
+        const queueStr =
             `${queue.songs
                 .map(
                     (song, id) =>
-                        `**${id ? id : 'Playing'}**. ${song.name} - \`${
-                            song.formattedDuration
+                        `**${id ? id : 'Playing'}**. ${song.name} - \`${song.formattedDuration
                         }\``,
                 )
                 .slice(0, 10)
