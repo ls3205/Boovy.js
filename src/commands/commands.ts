@@ -11,7 +11,7 @@ import {
     getVoiceConnection,
 } from '@discordjs/voice';
 import * as yts from 'youtube-search-without-api-key'
-import * as DisTube from 'distube';
+import dist, * as DisTube from 'distube';
 import { time } from 'console';
 import { title } from 'process';
 import { Queue } from 'discord-player';
@@ -38,16 +38,17 @@ export async function search(query) {
         await console.log("{Search Function} Title recieved is: " + title);
         await console.log("{Search Function} Thumbnail recieved is: " + thumbnail);
         return { url, title, thumbnail };
+    } else {
+        let json = await yts.search(query);
+        let url = await json[0].url;
+        let title = await json[0].title;
+        let thumbnail = await json[0].snippet.thumbnails.url;
+        await console.log("{Search Function} Link recieved is: " + url);
+        await console.log("{Search Function} Title recieved is: " + title);
+        await console.log("{Search Function} Thumbnail recieved is: " + thumbnail);
+        return { url, title, thumbnail };
     }
-    let json = await yts.search(query);
-    let url = await json[0].url;
-    let title = await json[0].title;
-    let thumbnail = await json[0].snippet.thumbnails.url;
-    await console.log("{Search Function} Link recieved is: " + url);
-    await console.log("{Search Function} Title recieved is: " + title);
-    await console.log("{Search Function} Thumbnail recieved is: " + thumbnail);
-    return { url, title, thumbnail };
-}
+};
 
 export async function play(message, query) {
     const mention = await getMention(message);
@@ -70,7 +71,7 @@ export async function skip(message) {
         .setDescription(':fast_forward:')
     await message.channel.send({ embeds: [embed] });
     dst.skip(message);
-}
+};
 
 export async function join(message) {
     const connection = joinVoiceChannel({
@@ -93,11 +94,11 @@ export async function join(message) {
         connection.destroy();
         throw error;
     }
-}
+};
 
 export async function stop(message) {
     dst.stop(message);
-}
+};
 
 export async function searchMsg(message, query) {
     const { url, title, thumbnail } = await search(query);
@@ -110,12 +111,12 @@ export async function searchMsg(message, query) {
         .setThumbnail(thumbnail)
         .setAuthor(`${message.author.username}`, message.author.displayAvatarURL());
     await message.channel.send({ embeds: [embed] });
-}
+};
 
 export async function getMention(message) {
     const mention = '<@' + await message.member?.id + '>';
     return mention;
-}
+};
 
 export async function leave(message) {
     const embed = new MessageEmbed()
@@ -125,7 +126,7 @@ export async function leave(message) {
         .setAuthor(message.author.username, message.author.avatarURL())
     await message.channel.send({ embeds: [embed] });
     getVoiceConnection(message.guild?.id)?.disconnect();
-}
+};
 
 export async function loop(message) {
     var loopstr;
@@ -142,7 +143,7 @@ export async function loop(message) {
         dst.setRepeatMode(loopstr);
         loopvar = 0;
     }
-}
+};
 
 export async function queue(message) {
     const queue = dst.getQueue(message);
