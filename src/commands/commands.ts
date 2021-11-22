@@ -12,9 +12,6 @@ import {
 } from '@discordjs/voice';
 import * as yts from 'youtube-search-without-api-key'
 import dist, * as DisTube from 'distube';
-import { time } from 'console';
-import { title } from 'process';
-import { Queue } from 'discord-player';
 const client = new DiscordJS.Client({ intents: ['GUILDS', 'GUILD_MEMBERS', 'GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS', 'GUILD_VOICE_STATES'] });
 const dst = new DisTube.default(client, {
     leaveOnEmpty: false,
