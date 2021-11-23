@@ -1,6 +1,9 @@
 {
   "name": "boovy",
   "version": "1.0.0",
+  "engines": {
+    "node": "16.x"
+  },
   "description": "Boovy.js is primarily a learning experience for two fucks who don't know shit.",
   "main": "index.js",
   "scripts": {
