@@ -169,3 +169,8 @@ export async function queue(message) {
         await message.channel.send({ embeds: [embed] });
     }
 };
+
+export async function volume(message) {
+    const volume = Number(message);
+    dst.setVolume(message.guildId, volume);
+};
