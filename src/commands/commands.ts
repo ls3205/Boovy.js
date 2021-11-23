@@ -10,7 +10,7 @@ import {
     DiscordGatewayAdapterCreator,
     getVoiceConnection,
 } from '@discordjs/voice';
-import * as yts from 'youtube-search-without-api-key'
+import * as yts from 'youtube-search-without-api-key';
 import dist, * as DisTube from 'distube';
 const client = new DiscordJS.Client({ intents: ['GUILDS', 'GUILD_MEMBERS', 'GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS', 'GUILD_VOICE_STATES'] });
 const dst = new DisTube.default(client, {
@@ -176,4 +176,11 @@ export async function volume(message, args) {
     const oldVolume = queue?.volume;
     console.log(`${oldVolume} --> ${volume}`);
     queue?.setVolume(volume);
+
+    const embed = new MessageEmbed()
+        .setColor('#00be94')
+        .setTitle('Volume Changed')
+        .setDescription(`${oldVolume} --> ${volume}`)
+        .setAuthor(message.author.username, message.author.avatarURL())
+    await message.channel.send({ embeds: [embed] });
 };
