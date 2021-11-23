@@ -145,7 +145,7 @@ export async function loop(message) {
 export async function queue(message) {
     const queue = dst.getQueue(message);
     if (!queue) {
-        return throwError('Nothing is playing!')
+        throwError('Nothing is playing!')
     } else {
 
         const queueStr =
@@ -170,7 +170,7 @@ export async function queue(message) {
 export async function volume(message, args) {
     const queue = dst.getQueue(message);
     if (!queue) {
-        return throwError('Nothing is playing!')
+        throwError('Nothing is playing!')
     };
     const volume = parseInt(args);
     const oldVolume = queue?.volume;
