@@ -170,7 +170,10 @@ export async function queue(message) {
     }
 };
 
-export async function volume(message) {
-    const volume = Number(message);
-    dst.setVolume(message.guildId, volume);
+export async function volume(message, args) {
+    const volume = parseInt(args);
+    const queue = dst.getQueue(message);
+    const oldVolume = queue?.volume;
+    console.log(`${oldVolume} --> ${volume}`);
+    queue?.setVolume(volume);
 };

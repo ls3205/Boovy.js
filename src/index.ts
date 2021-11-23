@@ -67,7 +67,7 @@ client.on('messageCreate', async (message) => {
         await commands.queue(message);
     }
     if (message.content.startsWith(`${prefix}volume`)) {
-        await commands.volume(message);
+        await commands.volume(message, args);
     }
 });
 
