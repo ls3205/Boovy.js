@@ -62,12 +62,31 @@ export async function play(message, query) {
 };
 
 export async function skip(message) {
-    const embed = new MessageEmbed()
-        .setColor('#00be94')
-        .setTitle('Skipped Song')
-        .setDescription(':fast_forward:')
-    await message.channel.send({ embeds: [embed] });
-    dst.skip(message);
+    const queue = dst.getQueue(message);
+    const songsRemaining = queue?.songs;
+    if (songsRemaining) {
+        console.log(songsRemaining);
+    }
+    if (!queue) {
+        const embed = new MessageEmbed()
+            .setColor('#00be94')
+            .setTitle('Nothing is playing')
+            .setDescription('There is nothing playing right now')
+        await message.channel.send({ embeds: [embed] });
+    } else if (songsRemaining?.length === 1) {
+        const embed = new MessageEmbed()
+            .setColor('#00be94')
+            .setTitle('Queue is empty')
+            .setDescription('The queue is empty, there is nothing ot skip to')
+        await message.channel.send({ embeds: [embed] });
+    } else {
+        const embed = new MessageEmbed()
+            .setColor('#00be94')
+            .setTitle('Skipped Song')
+            .setDescription(':fast_forward:')
+        await message.channel.send({ embeds: [embed] });
+        dst.skip(message);
+    }
 };
 
 export async function join(message) {
