@@ -64,9 +64,6 @@ export async function play(message, query) {
 export async function skip(message) {
     const queue = dst.getQueue(message);
     const songsRemaining = queue?.songs;
-    if (songsRemaining) {
-        console.log(songsRemaining);
-    }
     if (!queue) {
         const embed = new MessageEmbed()
             .setColor('#00be94')
