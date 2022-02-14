@@ -74,8 +74,9 @@ export async function skip(message) {
         const embed = new MessageEmbed()
             .setColor('#00be94')
             .setTitle('Queue is empty')
-            .setDescription('The queue is empty, there is nothing ot skip to')
+            .setDescription('The queue is empty, there is nothing to skip to, stopping the player')
         await message.channel.send({ embeds: [embed] });
+        dst.stop(message);
     } else {
         const embed = new MessageEmbed()
             .setColor('#00be94')
