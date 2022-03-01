@@ -143,19 +143,34 @@ export async function leave(message) {
 };
 
 export async function loop(message) {
-    var loopstr;
-    if (loopvar == 0) {
-        loopstr = 'repeat';
-        dst.setRepeatMode(loopstr);
-        loopvar = 1;
-    } else if (loopvar == 1) {
-        loopstr = 'loop';
-        dst.setRepeatMode(loopstr);
-        loopvar = 2;
-    } else {
-        loopstr = 'none';
-        dst.setRepeatMode(loopstr);
-        loopvar = 0;
+    const queue = dst.getQueue(message);
+    const { RepeatMode } = require("distube");
+    let mode, embed;
+    switch (queue?.setRepeatMode(message)) {
+        case RepeatMode.DISABLED:
+            mode = "Off";
+            embed = new MessageEmbed()
+                .setColor('#00be94')
+                .setTitle('Looping is disabled')
+                .setDescription(`:x:`)
+                .setAuthor(message.author.username, message.author.avatarURL())
+            break;
+        case RepeatMode.SONG:
+            mode = "Repeat a song";
+            embed = new MessageEmbed()
+                .setColor('#00be94')
+                .setTitle('Looping current song')
+                .setDescription(`:repeat_one:`)
+                .setAuthor(message.author.username, message.author.avatarURL())
+            break;
+        case RepeatMode.QUEUE:
+            mode = "Repeat all queue";
+            embed = new MessageEmbed()
+                .setColor('#00be94')
+                .setTitle('Looping queue')
+                .setDescription(`:repeat:`)
+                .setAuthor(message.author.username, message.author.avatarURL())
+            break;
     }
 };
 
