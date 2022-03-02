@@ -71,6 +71,9 @@ client.on('messageCreate', async (message) => {
     if (message.content.startsWith(`${prefix}volume`)) {
         await commands.volume(message, args);
     }
+    if (message.content.startsWith(`${prefix}loop`)) {
+        await commands.loop(message);
+    }
 });
 
 dst
@@ -78,5 +81,5 @@ dst
         console.log(`Start playing: ${song}`);
     })
 
-server.keepAlive();
+//server.keepAlive();
 client.login(token);

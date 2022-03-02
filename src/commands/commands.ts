@@ -18,7 +18,6 @@ const dst = new DisTube.default(client, {
     emptyCooldown: 5000,
     leaveOnStop: false,
 });
-var loopvar = 0;
 
 export async function search(query) {
     if (String(query).startsWith("https://www.youtube.com/watch?v=")) {
@@ -146,32 +145,40 @@ export async function loop(message) {
     const queue = dst.getQueue(message);
     const { RepeatMode } = require("distube");
     let mode, embed;
-    switch (queue?.setRepeatMode(message)) {
-        case RepeatMode.DISABLED:
-            mode = "Off";
-            embed = new MessageEmbed()
-                .setColor('#00be94')
-                .setTitle('Looping is disabled')
-                .setDescription(`:x:`)
-                .setAuthor(message.author.username, message.author.avatarURL())
-            break;
-        case RepeatMode.SONG:
-            mode = "Repeat a song";
-            embed = new MessageEmbed()
-                .setColor('#00be94')
-                .setTitle('Looping current song')
-                .setDescription(`:repeat_one:`)
-                .setAuthor(message.author.username, message.author.avatarURL())
-            break;
-        case RepeatMode.QUEUE:
-            mode = "Repeat all queue";
-            embed = new MessageEmbed()
-                .setColor('#00be94')
-                .setTitle('Looping queue')
-                .setDescription(`:repeat:`)
-                .setAuthor(message.author.username, message.author.avatarURL())
-            break;
+    if (!queue) {
+        embed = new MessageEmbed()
+            .setColor('#00be94')
+            .setTitle('Nothing is playing')
+            .setDescription('There is nothing playing right now')
+    } else {
+        switch (queue?.setRepeatMode(undefined)) {
+            case RepeatMode.DISABLED:
+                mode = "Off";
+                embed = new MessageEmbed()
+                    .setColor('#00be94')
+                    .setTitle('Looping is disabled')
+                    .setDescription(`:x:`)
+                    .setAuthor(message.author.username, message.author.avatarURL())
+                break;
+            case RepeatMode.SONG:
+                mode = "Repeat a song";
+                embed = new MessageEmbed()
+                    .setColor('#00be94')
+                    .setTitle('Looping current song')
+                    .setDescription(`:repeat_one:`)
+                    .setAuthor(message.author.username, message.author.avatarURL())
+                break;
+            case RepeatMode.QUEUE:
+                mode = "Repeat all queue";
+                embed = new MessageEmbed()
+                    .setColor('#00be94')
+                    .setTitle('Looping queue')
+                    .setDescription(`:repeat:`)
+                    .setAuthor(message.author.username, message.author.avatarURL())
+                break;
+        }
     }
+    await message.channel.send({ embeds: [embed] });
 };
 
 export async function queue(message) {
