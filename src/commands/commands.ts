@@ -224,6 +224,28 @@ export async function volume(message, args) {
     await message.channel.send({ embeds: [embed] });
 };
 
+export async function nowPlaying(message) {
+    const queue = dst.getQueue(message);
+    if (!queue) return (throwError('Nothing is playing!'));
+    const song = queue.songs[0];
+    const name = song.name;
+    const link = song.url;
+    const duration = song.duration;
+    const formattedDuration = song.formattedDuration;
+    const currentTime = queue.currentTime;
+    // @ts-ignore
+    const remaining = duration - currentTime;
+    const embed = new MessageEmbed()
+        .setColor('#00be94')
+        .setTitle('Now Playing:')
+        .setDescription(`[${name}](${link}) \`${formattedDuration}\`\n\n**Remaining:** ${remaining}`)
+        // @ts-ignore
+        .setThumbnail(song.thumbnail)
+        .setAuthor(message.author.username, message.author.avatarURL())
+    await message.channel.send({ embeds: [embed] });
+    await message.channel.send(`Remaining: ${remaining}\nduration: ${duration}\ncurrentTime: ${currentTime}`);
+}
+
 export async function throwError(message) {
     const embed = new MessageEmbed()
         .setColor('#00be94')

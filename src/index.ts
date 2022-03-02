@@ -74,6 +74,9 @@ client.on('messageCreate', async (message) => {
     if (message.content.startsWith(`${prefix}loop`)) {
         await commands.loop(message);
     }
+    if (message.content.startsWith(`${prefix}np`)) {
+        await commands.nowPlaying(message);
+    }
 });
 
 dst
