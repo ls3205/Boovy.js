@@ -233,17 +233,26 @@ export async function nowPlaying(message) {
     const duration = song.duration;
     const formattedDuration = song.formattedDuration;
     const currentTime = queue.currentTime;
+    const formattedCurrentTime = queue.formattedCurrentTime;
     // @ts-ignore
     const remaining = duration - currentTime;
+    var formatedRemaining = '';
+    if (remaining < 3600) { 
+        formatedRemaining = new Date(remaining * 1000).toISOString().substr(14, 5)
+    } else {
+        formatedRemaining = new Date(remaining * 1000).toISOString().substr(11, 8);
+    }
     const embed = new MessageEmbed()
         .setColor('#00be94')
         .setTitle('Now Playing:')
-        .setDescription(`[${name}](${link}) \`${formattedDuration}\`\n\n**Remaining:** ${remaining}`)
+        .setDescription(`[${name}](${link}) \`${formattedDuration}\``)
         // @ts-ignore
         .setThumbnail(song.thumbnail)
         .setAuthor(message.author.username, message.author.avatarURL())
+        .addField('Requested by', `${song.user}`, true)
+        .addField('Current Time', `${formattedCurrentTime}`, true)
+        .addField('Remaining', `${formatedRemaining}`, true)
     await message.channel.send({ embeds: [embed] });
-    await message.channel.send(`Remaining: ${remaining}\nduration: ${duration}\ncurrentTime: ${currentTime}`);
 }
 
 export async function throwError(message) {

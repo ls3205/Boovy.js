@@ -47,36 +47,16 @@ client.on('messageCreate', async (message) => {
     var connection;
     console.log("Arguments recieved: " + args);
 
-    if (message.content.startsWith(`${prefix}play`)) {
-        await commands.play(message, args);
-    }
-    if (message.content.startsWith(`${prefix}join`)) {
-        connection = await commands.join(message);
-    }
-    if (message.content.startsWith(`${prefix}stop`)) {
-        await commands.stop(message);
-    }
-    if (message.content.startsWith(`${prefix}skip`)) {
-        await commands.skip(message);
-    }
-    if (message.content.startsWith(`${prefix}search`)) {
-        await commands.searchMsg(message, args);
-    }
-    if (message.content.startsWith(`${prefix}leave`)) {
-        await commands.leave(message);
-    }
-    if (message.content.startsWith(`${prefix}queue`)) {
-        await commands.queue(message);
-    }
-    if (message.content.startsWith(`${prefix}volume`)) {
-        await commands.volume(message, args);
-    }
-    if (message.content.startsWith(`${prefix}loop`)) {
-        await commands.loop(message);
-    }
-    if (message.content.startsWith(`${prefix}np`)) {
-        await commands.nowPlaying(message);
-    }
+    if (message.content.startsWith(`${prefix}play`)) { await commands.play(message, args); }
+    if (message.content.startsWith(`${prefix}join`)) { connection = await commands.join(message); }
+    if (message.content.startsWith(`${prefix}stop`)) { await commands.stop(message); }
+    if (message.content.startsWith(`${prefix}skip`)) { await commands.skip(message); }
+    if (message.content.startsWith(`${prefix}search`)) { await commands.searchMsg(message, args); }
+    if (message.content.startsWith(`${prefix}leave`)) { await commands.leave(message); }
+    if (message.content.startsWith(`${prefix}queue`)) { await commands.queue(message); }
+    if (message.content.startsWith(`${prefix}volume`)) { await commands.volume(message, args); }
+    if (message.content.startsWith(`${prefix}loop`)) { await commands.loop(message); }
+    if (message.content.startsWith(`${prefix}np`)) { await commands.nowPlaying(message); }
 });
 
 dst
