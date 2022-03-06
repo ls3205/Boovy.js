@@ -1,5 +1,3 @@
-// Should I start work on this again?
-
 import DiscordJS, { Message, VoiceChannel } from 'discord.js';
 import {
     joinVoiceChannel,
@@ -64,5 +62,5 @@ dst
         console.log(`Start playing: ${song}`);
     })
 
-//server.keepAlive();
+server.keepAlive();
 client.login(token);
