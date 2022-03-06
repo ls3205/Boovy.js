@@ -52,7 +52,6 @@ client.on('messageCreate', async (message) => {
     if (message.content.startsWith(`${prefix}stop`)) { await commands.stop(message); }
     if (message.content.startsWith(`${prefix}skip`)) { await commands.skip(message); }
     if (message.content.startsWith(`${prefix}search`)) { await commands.searchMsg(message, args); }
-    if (message.content.startsWith(`${prefix}search2`)) { await commands.search(message); }
     if (message.content.startsWith(`${prefix}leave`)) { await commands.leave(message); }
     if (message.content.startsWith(`${prefix}queue`)) { await commands.queue(message); }
     if (message.content.startsWith(`${prefix}volume`)) { await commands.volume(message, args); }

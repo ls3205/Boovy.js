@@ -12,7 +12,6 @@ import {
 } from '@discordjs/voice';
 import * as yts from 'yt-search';
 import dist, * as DisTube from 'distube';
-import { NONAME } from 'dns';
 const client = new DiscordJS.Client({ intents: ['GUILDS', 'GUILD_MEMBERS', 'GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS', 'GUILD_VOICE_STATES'] });
 const dst = new DisTube.default(client, {
     leaveOnEmpty: false,
