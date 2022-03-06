@@ -11,7 +11,7 @@ import {
     VoiceConnectionStatus,
     DiscordGatewayAdapterCreator,
 } from '@discordjs/voice'; // Honestly not sure why I need this import it doesn't do shit but for whatever reason it doesn't work without it.
-import * as yts from 'youtube-search-without-api-key' //^
+import * as yts from 'yt-search' //^
 import * as DisTube from 'distube';
 import * as commands from './commands/commands'; //Since I didn't import them individually, you need to do commands.search, commands.play, etc. instead of just commands.
 import * as server from './server';
@@ -52,6 +52,7 @@ client.on('messageCreate', async (message) => {
     if (message.content.startsWith(`${prefix}stop`)) { await commands.stop(message); }
     if (message.content.startsWith(`${prefix}skip`)) { await commands.skip(message); }
     if (message.content.startsWith(`${prefix}search`)) { await commands.searchMsg(message, args); }
+    if (message.content.startsWith(`${prefix}search2`)) { await commands.search(message); }
     if (message.content.startsWith(`${prefix}leave`)) { await commands.leave(message); }
     if (message.content.startsWith(`${prefix}queue`)) { await commands.queue(message); }
     if (message.content.startsWith(`${prefix}volume`)) { await commands.volume(message, args); }

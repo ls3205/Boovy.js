@@ -10,8 +10,9 @@ import {
     DiscordGatewayAdapterCreator,
     getVoiceConnection,
 } from '@discordjs/voice';
-import * as yts from 'youtube-search-without-api-key';
+import * as yts from 'yt-search';
 import dist, * as DisTube from 'distube';
+import { NONAME } from 'dns';
 const client = new DiscordJS.Client({ intents: ['GUILDS', 'GUILD_MEMBERS', 'GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS', 'GUILD_VOICE_STATES'] });
 const dst = new DisTube.default(client, {
     leaveOnEmpty: false,
@@ -35,14 +36,12 @@ export async function search(query) {
         await console.log("{Search Function} Thumbnail recieved is: " + thumbnail);
         return { url, title, thumbnail };
     } else {
-        let json = await yts.search(query);
-        let url = await json[0].url;
-        let title = await json[0].title;
-        let thumbnail = await json[0].snippet.thumbnails.url;
-        await console.log("{Search Function} Link recieved is: " + url);
-        await console.log("{Search Function} Title recieved is: " + title);
-        await console.log("{Search Function} Thumbnail recieved is: " + thumbnail);
-        return { url, title, thumbnail };
+        const videos = await yts.search({ query: query, pages: 1 }).then((res) => res.videos);
+        const video = videos[0];
+        await console.log(`{Search Function} Title recieved is: ${video.title}`);
+        await console.log(`{Search Function} Thumbnail recieved is: ${video.thumbnail}`);
+        await console.log(`{Search Function} Link recieved is: ${video.url}`);
+        return { url: video.url, title: video.title, thumbnail: video.thumbnail };
     }
 };
 
@@ -237,7 +236,7 @@ export async function nowPlaying(message) {
     // @ts-ignore
     const remaining = duration - currentTime;
     var formatedRemaining = '';
-    if (remaining < 3600) { 
+    if (remaining < 3600) {
         formatedRemaining = new Date(remaining * 1000).toISOString().substr(14, 5)
     } else {
         formatedRemaining = new Date(remaining * 1000).toISOString().substr(11, 8);
