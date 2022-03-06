@@ -11,13 +11,8 @@ import {
     getVoiceConnection,
 } from '@discordjs/voice';
 import * as yts from 'yt-search';
-import dist, * as DisTube from 'distube';
-const client = new DiscordJS.Client({ intents: ['GUILDS', 'GUILD_MEMBERS', 'GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS', 'GUILD_VOICE_STATES'] });
-const dst = new DisTube.default(client, {
-    leaveOnEmpty: false,
-    emptyCooldown: 5000,
-    leaveOnStop: false,
-});
+import { dst } from '..';
+import { client } from '..';
 
 export async function search(query) {
     if (String(query).startsWith("https://www.youtube.com/watch?v=")) {
@@ -47,7 +42,7 @@ export async function search(query) {
 export async function play(message, query) {
     const mention = await getMention(message);
     const { url, title, thumbnail } = await search(query);
-    dst.play(message, url)
+    dst.play(message.member.voice.channel, url)
     const embed = new MessageEmbed()
         .setColor('#00be94')
         .setTitle('Now Playing')
@@ -136,7 +131,7 @@ export async function leave(message) {
         .setDescription(`:wave:`)
         .setAuthor(message.author.username, message.author.avatarURL())
     await message.channel.send({ embeds: [embed] });
-    getVoiceConnection(message.guild?.id)?.disconnect();
+    getVoiceConnection(message.guild?.id)?.destroy();
 };
 
 export async function loop(message) {

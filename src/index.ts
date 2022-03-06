@@ -13,12 +13,15 @@ import * as yts from 'yt-search' //^
 import * as DisTube from 'distube';
 import * as commands from './commands/commands'; //Since I didn't import them individually, you need to do commands.search, commands.play, etc. instead of just commands.
 import * as server from './server';
+import { YtDlpPlugin } from '@distube/yt-dlp';
 
-const client = new DiscordJS.Client({ intents: ['GUILDS', 'GUILD_MEMBERS', 'GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS', 'GUILD_VOICE_STATES'] });
-const dst = new DisTube.default(client, {
+export const client = new DiscordJS.Client({ intents: ['GUILDS', 'GUILD_MEMBERS', 'GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS', 'GUILD_VOICE_STATES'] });
+export const dst = new DisTube.default(client, {
     leaveOnEmpty: false,
     emptyCooldown: 5000,
-    leaveOnStop: false
+    leaveOnStop: false,
+    plugins: [new YtDlpPlugin()],
+    youtubeDL: false 
 });
 
 import dotenv from 'dotenv';
