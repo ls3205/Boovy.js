@@ -16,15 +16,21 @@ import { client } from '..';
 
 export async function search(query) {
     if (String(query).startsWith("https://www.youtube.com/watch?v=")) {
+        let video;
         const id = String(query).substring(
             query.indexOf("=") + 1,
             query.lastIndexOf("&")
         );
         await console.log(`{Search Function} Id recieved is: ${id}`);
-        let json = await yts.search(query);
+        let json = await yts.search({ query: id }).then((res) => res.all);
+        for (let i = 0; i < json.length; i++) {
+            if (json[i].videoId === id) {
+                video = json[i];
+            }
+        }
         let url = query;
-        let title = await json[0].title;
-        let thumbnail = await json[0].snippet.thumbnails.url;
+        let title = await video.title;
+        let thumbnail = await video.thumbnail;
         await console.log("{Search Function} Link recieved is: " + url);
         await console.log("{Search Function} Title recieved is: " + title);
         await console.log("{Search Function} Thumbnail recieved is: " + thumbnail);
