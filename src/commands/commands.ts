@@ -46,7 +46,8 @@ export async function search(query) {
 };
 
 export async function play(message, query) {
-    if (!query) return throwError('No query provided!');
+    if (query.includes('-play')) return throwError('No query provided!');
+    console.log(`Query: ${query}end`)
     const mention = await getMention(message);
     const { url, title, thumbnail } = await search(query);
     dst.play(message.member.voice.channel, url)
