@@ -51,8 +51,7 @@ export async function search(query) {
 };
 
 export async function play(message, query) {
-    if (query.includes('-play')) return throwError('No query provided!');
-    console.log(`Query: ${query}end`)
+    if (query === '-play' || query.length === 0) return throwError('No query provided!', message);
     const mention = await getMention(message);
     const { url, title, thumbnail } = await search(query);
     dst.play(message.member.voice.channel, url)
@@ -61,7 +60,7 @@ export async function play(message, query) {
         .setTitle('Now Playing')
         .setDescription(`[${title}](${url}) [${mention}]`)
         .setThumbnail(thumbnail)
-        .setAuthor(message.author.username, message.author.avatarURL())
+        .setAuthor({ name: message.author.username, iconURL: message.author.avatarURL() })
 
     await message.channel.send({ embeds: [embed] });
 };
@@ -128,7 +127,7 @@ export async function searchMsg(message, query) {
         .setTitle('Search Result')
         .setDescription(`[${title}](${url}) [${mention}]`)
         .setThumbnail(thumbnail)
-        .setAuthor(`${message.author.username}`, message.author.displayAvatarURL());
+        .setAuthor({ name: message.author.username, iconURL: message.author.avatarURL() });
     await message.channel.send({ embeds: [embed] });
 };
 
@@ -142,7 +141,7 @@ export async function leave(message) {
         .setColor('#00be94')
         .setTitle(`Left ${message.member?.voice.channel?.name}`)
         .setDescription(`:wave:`)
-        .setAuthor(message.author.username, message.author.avatarURL())
+        .setAuthor({ name: message.author.username, iconURL: message.author.avatarURL() });
     await message.channel.send({ embeds: [embed] });
     getVoiceConnection(message.guild?.id)?.destroy();
 };
@@ -164,7 +163,7 @@ export async function loop(message) {
                     .setColor('#00be94')
                     .setTitle('Looping is disabled')
                     .setDescription(`:x:`)
-                    .setAuthor(message.author.username, message.author.avatarURL())
+                    .setAuthor({ name: message.author.username, iconURL: message.author.avatarURL() });
                 break;
             case RepeatMode.SONG:
                 mode = "Repeat a song";
@@ -172,7 +171,7 @@ export async function loop(message) {
                     .setColor('#00be94')
                     .setTitle('Looping current song')
                     .setDescription(`:repeat_one:`)
-                    .setAuthor(message.author.username, message.author.avatarURL())
+                    .setAuthor({ name: message.author.username, iconURL: message.author.avatarURL() });
                 break;
             case RepeatMode.QUEUE:
                 mode = "Repeat all queue";
@@ -180,7 +179,7 @@ export async function loop(message) {
                     .setColor('#00be94')
                     .setTitle('Looping queue')
                     .setDescription(`:repeat:`)
-                    .setAuthor(message.author.username, message.author.avatarURL())
+                    .setAuthor({ name: message.author.username, iconURL: message.author.avatarURL() });
                 break;
         }
     }
@@ -190,7 +189,7 @@ export async function loop(message) {
 export async function queue(message) {
     const queue = dst.getQueue(message);
     if (!queue) {
-        throwError('Nothing is playing!')
+        throwError('Nothing is playing!', message)
     } else {
 
         const queueStr =
@@ -207,7 +206,7 @@ export async function queue(message) {
             .setColor('#00be94')
             .setTitle('Queue')
             .setDescription(`${queueStr}`)
-            .setAuthor(message.author.username, message.author.avatarURL())
+            .setAuthor({ name: message.author.username, iconURL: message.author.avatarURL() });
         await message.channel.send({ embeds: [embed] });
     }
 };
@@ -215,7 +214,7 @@ export async function queue(message) {
 export async function volume(message, args) {
     const queue = dst.getQueue(message);
     if (!queue) {
-        throwError('Nothing is playing!')
+        throwError('Nothing is playing!', message)
     };
     const volume = parseInt(args);
     const oldVolume = queue?.volume;
@@ -226,13 +225,13 @@ export async function volume(message, args) {
         .setColor('#00be94')
         .setTitle('Volume Changed')
         .setDescription(`${oldVolume} --> ${volume}`)
-        .setAuthor(message.author.username, message.author.avatarURL())
+        .setAuthor({ name: message.author.username, iconURL: message.author.avatarURL() });
     await message.channel.send({ embeds: [embed] });
 };
 
 export async function nowPlaying(message) {
     const queue = dst.getQueue(message);
-    if (!queue) return (throwError('Nothing is playing!'));
+    if (!queue) return (throwError('Nothing is playing!', message));
     const song = queue.songs[0];
     const name = song.name;
     const link = song.url;
@@ -254,18 +253,18 @@ export async function nowPlaying(message) {
         .setDescription(`[${name}](${link}) \`${formattedDuration}\``)
         // @ts-ignore
         .setThumbnail(song.thumbnail)
-        .setAuthor(message.author.username, message.author.avatarURL())
+        .setAuthor({ name: message.author.username, iconURL: message.author.avatarURL() })
         .addField('Requested by', `${song.user}`, true)
         .addField('Current Time', `${formattedCurrentTime}`, true)
         .addField('Remaining', `${formatedRemaining}`, true)
     await message.channel.send({ embeds: [embed] });
 }
 
-export async function throwError(message) {
+export async function throwError(error, message) {
     const embed = new MessageEmbed()
         .setColor('#00be94')
         .setTitle('Error')
-        .setDescription(`${message}`)
-        .setAuthor(message.author.username, message.author.avatarURL())
+        .setDescription(`${error}`)
+        .setAuthor({ name: message.author.username, iconURL: message.author.avatarURL() });
     await message.channel.send({ embeds: [embed] });
 };

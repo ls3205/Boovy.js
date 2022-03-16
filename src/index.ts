@@ -21,7 +21,7 @@ export const dst = new DisTube.default(client, {
     emptyCooldown: 5000,
     leaveOnStop: false,
     plugins: [new YtDlpPlugin()],
-    youtubeDL: false 
+    youtubeDL: false
 });
 
 import dotenv from 'dotenv';
