@@ -17,10 +17,15 @@ import { client } from '..';
 export async function search(query) {
     if (String(query).startsWith("https://www.youtube.com/watch?v=")) {
         let video;
-        const id = String(query).substring(
-            query.indexOf("=") + 1,
-            query.lastIndexOf("&")
-        );
+        let id;
+        if (String(query).includes("&")) {
+            id = String(query).substring(
+                query.indexOf("=") + 1,
+                query.lastIndexOf("&")
+            );
+        } else {
+            id = String(query).substring(query.indexOf("=") + 1);
+        }
         await console.log(`{Search Function} Id recieved is: ${id}`);
         let json = await yts.search({ query: id }).then((res) => res.all);
         for (let i = 0; i < json.length; i++) {
